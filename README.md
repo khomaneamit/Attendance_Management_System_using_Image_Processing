@@ -40,7 +40,7 @@ The Attendance Management System is a Python-based project designed to automate 
 
 #### Import the .sql file into the database:
 
-    mysql -u <username> -p Attendance_Management_System < Attendance_backup.sql
+    mysql -u <username> -p Attendance_Management_System < attendance_backup.sql
 Replace <username> with your MySQL username and provide the password when prompted.
 
 ### Set up pytesseract:
