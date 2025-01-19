@@ -1,147 +1,92 @@
-Attendance Management System
+# Attendance Management System using Image Processing
+The Attendance Management System is a Python-based project designed to automate attendance tracking using image processing and database integration. It leverages Optical Character Recognition (OCR) and signature matching to streamline the process of marking attendance.
+<br><br>
+## Key Features:
+- Image Processing: Detect and extract attendance table cells and signatures from uploaded images.
+- Signature Matching: Compare student signatures with pre-stored signatures for validation.
+- Database Integration: Record attendance in a MySQL database.
+- Email Notifications: Notify absent students automatically.
+- Graphical User Interface (GUI): User-friendly interface built using Tkinter.
+<br><br>
+## Prerequisites
+### Software Requirements:
+1. Python 3.x
+2. MySQL Server
+3. Libraries:
+    - tkinter
+    - opencv-python
+    - pytesseract
+    - mysql-connector-python
+    - smtplib
 
-Overview
+### Hardware Requirements:</b><br>
+- A computer capable of running Python and MySQL.
+- Scanner for capturing attendance sheets.
+<br><br>
+## Installation Steps
+### Clone the Repository:
 
-The Attendance Management System automates the process of tracking and recording attendance for students. It uses signature detection and Optical Character Recognition (OCR) to identify attendance records from scanned images, compares signatures, and updates the database accordingly. Absent students are notified via email.
+    git clone https://github.com/your-repo-link.git
 
-Key Features:
+### Install Required Libraries:
 
-Image Processing: Detect and extract attendance table cells and signatures from uploaded images.
+    pip install opencv-python pytesseract mysql-connector-python
 
-Signature Matching: Compare student signatures with pre-stored signatures for validation.
+### Configure MySQL Database:
+#### Open your MySQL client or command line tool.
+#### Create a new database:
 
-Database Integration: Record attendance in a MySQL database.
+    CREATE DATABASE Attendance_Management_System;
 
-Email Notifications: Notify absent students automatically.
+#### Import the .sql file into the database:
 
-Graphical User Interface (GUI): User-friendly interface built using Tkinter.
+    mysql -u <username> -p Attendance_Management_System < Attendance_Management_System.sql
+Replace <username> with your MySQL username and provide the password when prompted.
 
-Prerequisites
+### Set up pytesseract:
 
-Software Requirements:
+- Download and install Tesseract OCR from here.
 
-Python 3.x
+- Configure the Tesseract path if not added to the system PATH.
 
-MySQL Server
+### Update Email Credentials:
 
-Libraries:
+- Open the code and update the from_email and password variables in the send_absence_email function.
 
-tkinter
+- Ensure the email account has "Allow less secure apps" enabled or uses an app-specific password.
+<br><br>
+## Usage
 
-opencv-python
+### Run the Application:
 
-pytesseract
+    python Attendance.py
 
-mysql-connector-python
+### Add Attendance:
 
-smtplib
+- Navigate to the "Add Attendance" tab.
+- Select the date, time, subject code, and upload the attendance sheet image.
+- Click "Submit" to process the attendance.
+  
+### View Attendance by Subject:
 
-Hardware Requirements:
+- Navigate to the "Subject" tab.
+- Select date, time, and subject code to view attendance records.
 
-A computer capable of running Python and MySQL.
+### View Attendance by Student:
 
-Scanner for capturing attendance sheets.
+- Navigate to the "Student" tab.
+- Enter the roll number and optional filters (date, time, subject code).
+<br><br>
+## Folder Structure
 
-Installation Steps
-
-Clone the Repository:
-
-git clone https://github.com/your-repo-link.git
-
-Install Required Libraries:
-
-pip install opencv-python pytesseract mysql-connector-python
-
-Configure MySQL Database:
-
-Create a database named Attendance_Management_System.
-
-Create required tables:
-
-students: Stores student details (roll number, name, email).
-
-attendance: Stores attendance records.
-
-subjects: Stores subject codes.
-
-Add the following stored procedure:
-
-CREATE PROCEDURE InsertAttendanceRecord (
-    IN roll_number VARCHAR(8),
-    IN subject_code VARCHAR(10),
-    IN date DATE,
-    IN time TIME,
-    IN status VARCHAR(10)
-)
-BEGIN
-    INSERT INTO attendance (roll_number, subject_code, date, time, status)
-    VALUES (roll_number, subject_code, date, time, status);
-END;
-
-Set up pytesseract:
-
-Download and install Tesseract OCR from here.
-
-Configure the Tesseract path if not added to the system PATH.
-
-Update Email Credentials:
-
-Open the code and update the from_email and password variables in the send_absence_email function.
-
-Ensure the email account has "Allow less secure apps" enabled or uses an app-specific password.
-
-Usage
-
-Run the Application:
-
-python app.py
-
-Add Attendance:
-
-Navigate to the "Add Attendance" tab.
-
-Select the date, time, subject code, and upload the attendance sheet image.
-
-Click "Submit" to process the attendance.
-
-View Attendance by Subject:
-
-Navigate to the "Subject" tab.
-
-Select date, time, and subject code to view attendance records.
-
-View Attendance by Student:
-
-Navigate to the "Student" tab.
-
-Enter the roll number and optional filters (date, time, subject code).
-
-Folder Structure
-
-Student_signatures: Pre-stored student signature images.
-
-sign_images: Extracted signatures from the uploaded attendance sheet.
-
-Troubleshooting
-
-No student found with roll number:
-Ensure the students table in the database contains the correct data.
-
-Failed to send email:
-Verify internet connectivity and email credentials.
-
-Signature mismatch issues:
-Ensure the scanned image quality is clear and matches the original signature resolution.
-
-License
-
-This project is licensed under the MIT License.
-
-Contact
+- <b>Student_signatures:</b> Pre-stored student signature images.
+- <b>sign_images:</b> Extracted signatures from the uploaded attendance sheet.
+<br><br>
+## Contact
 
 For any queries or issues, contact:
 
-Author: Amit Khomane
+<b>Author:</b> Amit Khomane
 
-Email: khomaneamit16@gmail.com
+<b>Email:</b> khomaneamit16@gmail.com
 
