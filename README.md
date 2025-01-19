@@ -1,87 +1,147 @@
-# Overview
-This Python-based program automates the attendance management process by using image processing techniques to detect and compare student signatures from tabular images. The system extracts roll numbers from the input image, detects student signatures, compares them with the stored signatures, and determines whether the student is present or absent based on the similarity score.
+Attendance Management System
 
-The core technologies used in this project include OpenCV, Tesseract OCR, and Tkinter for building the graphical user interface (GUI).
+Overview
 
-# Features
-Signature Detection and Comparison: Automatically identifies student signatures from the table in the input image and compares them with stored signatures using feature matching.
-OCR Roll Number Extraction: Utilizes Tesseract OCR to extract roll numbers from the image.
-GUI: Provides a simple and intuitive GUI using Tkinter for file browsing and displaying attendance results.
-Image Processing: Preprocesses images to extract keypoints and descriptors for accurate comparison of student signatures.
-Flexible Attendance Criteria: Compares signatures and marks students as present if the similarity score exceeds a defined threshold (default: 85%).
+The Attendance Management System automates the process of tracking and recording attendance for students. It uses signature detection and Optical Character Recognition (OCR) to identify attendance records from scanned images, compares signatures, and updates the database accordingly. Absent students are notified via email.
 
-# Requirements
+Key Features:
+
+Image Processing: Detect and extract attendance table cells and signatures from uploaded images.
+
+Signature Matching: Compare student signatures with pre-stored signatures for validation.
+
+Database Integration: Record attendance in a MySQL database.
+
+Email Notifications: Notify absent students automatically.
+
+Graphical User Interface (GUI): User-friendly interface built using Tkinter.
+
+Prerequisites
+
+Software Requirements:
+
 Python 3.x
-OpenCV
+
+MySQL Server
+
+Libraries:
+
+tkinter
+
+opencv-python
+
 pytesseract
-Tkinter (usually comes with Python)
-Tesseract-OCR installed on your system (required for OCR functionality)
 
-# Python Libraries
-Install the required libraries using pip:
-pip install opencv-python pytesseract
+mysql-connector-python
 
-Tesseract Installation
-Windows: Download and install Tesseract OCR and add it to your system path.
-Linux/Mac: Install using your package manager.
-Example for Ubuntu:
-sudo apt-get install tesseract-ocr
+smtplib
 
-# Usage
-Place Stored Signatures: Ensure that stored student signatures are placed in the Student_signatures/ directory. Each signature image should be named using the student's roll number (e.g., 12345678.png).
+Hardware Requirements:
 
-Run the Program:
-You can run the program directly from the terminal or IDE:
-python attendance.py
-Select Input Image: Use the "Browse" button in the GUI to select the input image containing the table of roll numbers and signatures.
+A computer capable of running Python and MySQL.
 
-Process Image: Click "Submit" to process the image and compare the signatures.
+Scanner for capturing attendance sheets.
 
-View Results: The program will display whether each student is "Present" or "Absent" based on the similarity of their signatures.
+Installation Steps
 
-# Functionality Details
-1. load_and_preprocess_image(image_path)
-Loads the image from the given path, converts it to grayscale, and resizes it for uniformity in further processing.
+Clone the Repository:
 
-2. detect_and_compute_keypoints(image)
-Detects ORB (Oriented FAST and Rotated BRIEF) keypoints and computes descriptors for the given image.
+git clone https://github.com/your-repo-link.git
 
-3. match_descriptors(des1, des2)
-Uses a Brute-Force Matcher to find matches between the descriptors of the stored and detected signatures.
+Install Required Libraries:
 
-4. calculate_similarity(matches)
-Calculates a similarity score based on the average distance of the matched keypoints.
+pip install opencv-python pytesseract mysql-connector-python
 
-5. extract_table_cells(image_path, output_folder)
-Extracts individual cells from the input image, focusing on detecting signature regions.
+Configure MySQL Database:
 
-6. extract_text_from_image(image_path)
-Extracts roll numbers from the image using Tesseract OCR.
+Create a database named Attendance_Management_System.
 
-7. compare_signatures(image_path1, image_path2)
-Compares the extracted signature with the stored signature and returns a similarity score.
+Create required tables:
 
-8. is_sign(img)
-Detects whether the given image contains the word "sign," which helps locate the signature region in the table.
+students: Stores student details (roll number, name, email).
 
-9. GUI Components
-Browse Button: Opens a file dialog to select the input image.
-Submit Button: Initiates the image processing, signature comparison, and displays attendance results.
+attendance: Stores attendance records.
 
-# Directory Structure
-attendance_management/
-│
-├── attendance.py               # Main program file
-├── Student_signatures/          # Directory containing stored signature images
-├── sign_images/                 # Directory where detected signature images are saved temporarily
-└── README.md                    # This README file
+subjects: Stores subject codes.
 
-# Example
-Input image containing a table of roll numbers and signatures.
-Signature images for each student are stored in the Student_signatures folder.
-The program outputs the attendance status as "Present" or "Absent" based on signature similarity.
+Add the following stored procedure:
 
-# Troubleshooting
-Tesseract Not Found: Ensure that Tesseract-OCR is installed and added to your system path.
-Image Not Detected: Verify that the input image is in the correct format and contains clear roll numbers and signatures.
-Low Similarity Score: Adjust the image preprocessing steps (like resizing or filtering) if the similarity scores are consistently low.
+CREATE PROCEDURE InsertAttendanceRecord (
+    IN roll_number VARCHAR(8),
+    IN subject_code VARCHAR(10),
+    IN date DATE,
+    IN time TIME,
+    IN status VARCHAR(10)
+)
+BEGIN
+    INSERT INTO attendance (roll_number, subject_code, date, time, status)
+    VALUES (roll_number, subject_code, date, time, status);
+END;
+
+Set up pytesseract:
+
+Download and install Tesseract OCR from here.
+
+Configure the Tesseract path if not added to the system PATH.
+
+Update Email Credentials:
+
+Open the code and update the from_email and password variables in the send_absence_email function.
+
+Ensure the email account has "Allow less secure apps" enabled or uses an app-specific password.
+
+Usage
+
+Run the Application:
+
+python app.py
+
+Add Attendance:
+
+Navigate to the "Add Attendance" tab.
+
+Select the date, time, subject code, and upload the attendance sheet image.
+
+Click "Submit" to process the attendance.
+
+View Attendance by Subject:
+
+Navigate to the "Subject" tab.
+
+Select date, time, and subject code to view attendance records.
+
+View Attendance by Student:
+
+Navigate to the "Student" tab.
+
+Enter the roll number and optional filters (date, time, subject code).
+
+Folder Structure
+
+Student_signatures: Pre-stored student signature images.
+
+sign_images: Extracted signatures from the uploaded attendance sheet.
+
+Troubleshooting
+
+No student found with roll number:
+Ensure the students table in the database contains the correct data.
+
+Failed to send email:
+Verify internet connectivity and email credentials.
+
+Signature mismatch issues:
+Ensure the scanned image quality is clear and matches the original signature resolution.
+
+License
+
+This project is licensed under the MIT License.
+
+Contact
+
+For any queries or issues, contact:
+
+Author: Amit Khomane
+
+Email: khomaneamit16@gmail.com
+
